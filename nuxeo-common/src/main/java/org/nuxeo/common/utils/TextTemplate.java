@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -371,6 +373,18 @@ public class TextTemplate {
         }
     }
 
+    public String processFreemarker(String template) throws IOException, TemplateException {
+        if (freemarkerConfiguration == null) {
+            initFreeMarker();
+        }
+        Template nxtpl = new Template("name", new StringReader(template), freemarkerConfiguration);
+        try (Writer writer = new EscapeVariableFilter(new StringWriter())) {
+            nxtpl.process(freemarkerVars, writer);
+            return writer.toString();
+        }
+    }
+
+
     protected static class EscapeVariableFilter extends FilterWriter {
 
         protected static final int DOLLAR_SIGN = "$".codePointAt(0);
@@ -401,6 +415,10 @@ public class TextTemplate {
             write(cbuf, 0, cbuf.length);
         }
 
+        @Override
+        public String toString() {
+            return out.toString();
+        }
     }
 
     /**
