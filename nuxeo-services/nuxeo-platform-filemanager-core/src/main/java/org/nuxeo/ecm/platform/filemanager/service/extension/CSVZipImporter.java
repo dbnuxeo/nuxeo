@@ -15,9 +15,9 @@
  *
  * Contributors:
  *     Nuxeo - initial API and implementation
+ *     Jackie Aldama <jaldama@nuxeo.com>
  *
  */
-
 package org.nuxeo.ecm.platform.filemanager.service.extension;
 
 import java.io.File;
@@ -117,6 +117,7 @@ public class CSVZipImporter extends AbstractFileImporter {
                 for (CSVRecord csvRecord : csvParser) {
                     String type = null;
                     String id = null;
+                    String name = null;
                     Map<String, String> stringValues = new HashMap<>();
                     for (String headerValue : header.keySet()) {
                         String lineValue = csvRecord.get(headerValue);
@@ -124,6 +125,8 @@ public class CSVZipImporter extends AbstractFileImporter {
                             type = lineValue;
                         } else if ("id".equalsIgnoreCase(headerValue)) {
                             id = lineValue;
+                        } else if ("name".equalsIgnoreCase(headerValue)) {
+                            name = lineValue;
                         } else {
                             stringValues.put(headerValue, lineValue);
                         }
@@ -151,7 +154,13 @@ public class CSVZipImporter extends AbstractFileImporter {
                         if (id == null) {
                             id = IdUtils.generateStringId();
                         }
-                        targetDoc = session.createDocumentModel(parentPath, id, type);
+
+                        if (name == null || name.isEmpty()) {
+                            log.error("Can not create doc without a name, skipping line");
+                            continue;
+                        }
+
+                        targetDoc = session.createDocumentModel(parentPath, name, type);
                     }
 
                     // update doc properties
@@ -257,5 +266,4 @@ public class CSVZipImporter extends AbstractFileImporter {
 
         return fieldValue;
     }
-
 }

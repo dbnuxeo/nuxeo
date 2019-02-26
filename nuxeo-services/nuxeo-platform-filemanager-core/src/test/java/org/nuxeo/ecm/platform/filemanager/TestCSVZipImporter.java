@@ -15,10 +15,9 @@
  *
  * Contributors:
  *     Nuxeo - initial API and implementation
- *
+ *     Jackie Aldama <jaldama@nuxeo.com>
  * $Id$
  */
-
 package org.nuxeo.ecm.platform.filemanager;
 
 import static org.junit.Assert.assertEquals;
@@ -30,6 +29,7 @@ import java.util.zip.ZipFile;
 
 import javax.inject.Inject;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.common.utils.FileUtils;
@@ -56,57 +56,74 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 @Deploy("org.nuxeo.ecm.platform.types.api")
 @Deploy("org.nuxeo.ecm.platform.types.core")
 @Deploy("org.nuxeo.ecm.platform.filemanager.core")
-public class TestCSVImporter {
+public class TestCSVZipImporter {
 
     @Inject
     protected CoreSession coreSession;
 
-    protected DocumentModel destWS;
+    protected DocumentModel workspace1;
+
+    protected DocumentModel workspace2;
 
     protected DocumentModel wsRoot;
 
-    private static File getArchiveFile() {
-        return new File(FileUtils.getResourcePathFromContext("test-data/testCSVArchive.zip"));
+    private static File getArchiveFile(String file) {
+        return new File(FileUtils.getResourcePathFromContext(file));
     }
 
+    @Before
     public void createTestDocuments() throws Exception {
         wsRoot = coreSession.getDocument(new PathRef("/default-domain/workspaces"));
 
-        DocumentModel ws = coreSession.createDocumentModel(wsRoot.getPathAsString(), "ws1", "Workspace");
-        ws.setProperty("dublincore", "title", "test WS");
-        ws = coreSession.createDocument(ws);
-        destWS = ws;
+        workspace1= coreSession.createDocumentModel(wsRoot.getPathAsString(), "ws1", "Workspace");
+        workspace1.setProperty("dublincore", "title", "test WS1");
+        workspace1 = coreSession.createDocument(workspace1);
+
+        workspace2= coreSession.createDocumentModel(wsRoot.getPathAsString(), "ws2", "Workspace");
+        workspace2.setProperty("dublincore", "title", "test WS2");
+        workspace2 = coreSession.createDocument(workspace2);
     }
 
     @Test
     public void testArchiveDetection() throws Exception {
-        createTestDocuments();
-        ZipFile archive = CSVZipImporter.getArchiveFileIfValid(getArchiveFile());
+        ZipFile archive = CSVZipImporter.getArchiveFileIfValid(getArchiveFile("test-data/testCSVArchive.zip"));
         assertNotNull(archive);
         archive.close();
     }
 
     @Test
     public void testImportViaFileManager() throws Exception {
-        createTestDocuments();
-        File archive = getArchiveFile();
+        File archive = getArchiveFile("test-data/testCSVArchive.zip");
         FileManager fm = Framework.getService(FileManager.class);
         Blob blob = Blobs.createBlob(archive);
-        FileImporterContext context = FileImporterContext.builder(coreSession, blob, destWS.getPathAsString())
+        FileImporterContext context = FileImporterContext.builder(coreSession, blob, workspace1.getPathAsString())
                                                          .overwrite(true)
                                                          .build();
         fm.createOrUpdateDocument(context);
-        DocumentModelList children = coreSession.getChildren(destWS.getRef());
+        DocumentModelList children = coreSession.getChildren(workspace1.getRef());
         assertSame(2, children.size());
 
-        DocumentModel MyFile = coreSession.getChild(destWS.getRef(), "myfile");
-        DocumentModel MyNote = coreSession.getChild(destWS.getRef(), "mynote");
+        DocumentModel MyFile = coreSession.getChild(workspace1.getRef(), "My File");
+        DocumentModel MyNote = coreSession.getChild(workspace1.getRef(), "My Note");
 
         assertEquals("My File", MyFile.getTitle());
         assertEquals("My Note", MyNote.getTitle());
 
         assertEquals("this is text", MyNote.getProperty("note", "note"));
         assertNotNull(MyFile.getProperty("file", "content"));
+    }
+
+    @Test
+    public void testDocumentCreationFailureWithNoName() throws Exception {
+        File archive = getArchiveFile("test-data/testNoNameCSVArchive.zip");
+        FileManager fm = Framework.getService(FileManager.class);
+        Blob blob = Blobs.createBlob(archive);
+        FileImporterContext context = FileImporterContext.builder(coreSession, blob, workspace2.getPathAsString())
+                                                         .overwrite(true)
+                                                         .build();
+        fm.createOrUpdateDocument(context);
+        DocumentModelList children = coreSession.getChildren(workspace2.getRef());
+        assertSame(0, children.size());
     }
 
 }
