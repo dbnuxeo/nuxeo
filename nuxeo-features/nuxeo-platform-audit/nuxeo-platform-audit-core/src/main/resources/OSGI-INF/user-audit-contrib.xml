@@ -6,7 +6,7 @@
   </documentation>
 
   <extension target="org.nuxeo.ecm.platform.audit.service.NXAuditEventsService"
-    point="event">
+             point="event">
     <event name="user_created">
       <extendedInfos>
         <extendedInfo expression="${message.properties.id}" key="id" />

@@ -109,7 +109,8 @@ public class PluggableRestletService extends DefaultComponent {
 
             RestletPluginDescriptor rpd = restletsDescriptors.get(name);
             if (rpd == null) {
-                log.error("Error while creating Restlet instance. Cannot get RestletPluginDescriptor for name: " + name);
+                log.error(
+                        "Error while creating Restlet instance. Cannot get RestletPluginDescriptor for name: " + name);
                 return null;
             }
             Class<Restlet> theClass = rpd.getClassName();

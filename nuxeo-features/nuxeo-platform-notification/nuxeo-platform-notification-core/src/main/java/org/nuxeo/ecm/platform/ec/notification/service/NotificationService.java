@@ -497,8 +497,10 @@ public class NotificationService extends DefaultComponent implements Notificatio
                 + NXQL.escapeString(prefixedPrincipalName);
 
         return CoreInstance.doPrivileged(repositoryName,
-                (CoreSession s) -> s.query(nxql).stream().map(NotificationService::detachDocumentModel).collect(
-                        toList()));
+                (CoreSession s) -> s.query(nxql)
+                                    .stream()
+                                    .map(NotificationService::detachDocumentModel)
+                                    .collect(toList()));
     }
 
     protected static DocumentModel detachDocumentModel(DocumentModel doc) {

@@ -152,7 +152,7 @@ public class TestSetPropertiesActionOptimizations {
         String nxql = String.format("SELECT * FROM Note where ecm:parentId='%s'", model.getId());
         String user = session.getPrincipal().getName();
         return new BulkCommand.Builder(ACTION_NAME, nxql, user).repository(session.getRepositoryName())
-                                                         .param("dc:title", UUID.randomUUID().toString());
+                                                               .param("dc:title", UUID.randomUUID().toString());
     }
 
 }

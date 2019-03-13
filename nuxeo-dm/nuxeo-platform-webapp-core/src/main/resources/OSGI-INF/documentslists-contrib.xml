@@ -5,11 +5,12 @@
   <documentation>
     Default DocumentsLists used in Nuxeo5.
 
-    @author <a href="mailto:td@nuxeo.com">Thierry Delprat</a>
+    @author
+    <a href="mailto:td@nuxeo.com">Thierry Delprat</a>
   </documentation>
 
   <extension target="org.nuxeo.ecm.webapp.documentsLists.DocumentsListsService"
-    point="list">
+             point="list">
 
     <documentsList name="DEFAULT">
       <category>CLIPBOARD</category>
@@ -49,7 +50,7 @@
       </events>
       <isSession>false</isSession>
     </documentsList>
-    
+
     <documentsList name="CURRENT_SELECTION_VERSIONS">
       <events>
         <event>documentSelectionChanged</event>

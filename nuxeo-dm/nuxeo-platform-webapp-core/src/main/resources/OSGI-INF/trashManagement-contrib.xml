@@ -10,7 +10,7 @@
   </documentation>
 
   <extension target="org.nuxeo.ecm.webapp.trashManagement.TrashManagementService"
-    point="config">
+             point="config">
 
     <trashConfig enabled="true" />
 

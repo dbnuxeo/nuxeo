@@ -2,8 +2,8 @@
 <component name="org.nuxeo.mongodb.audit.test.contrib">
 
   <extension point="extendedInfo" target="org.nuxeo.ecm.platform.audit.service.NXAuditEventsService">
-     <extendedInfo expression="${source.dublincore.title}" key="title" />
-     <extendedInfo expression="${principal.name}" key="user" />
+    <extendedInfo expression="${source.dublincore.title}" key="title" />
+    <extendedInfo expression="${principal.name}" key="user" />
   </extension>
 
 </component>

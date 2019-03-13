@@ -10,7 +10,7 @@
   </documentation>
   <extension-point name="config">
     <object
-      class="org.nuxeo.ecm.webapp.trashManagement.TrashConfigDescriptor" />
+            class="org.nuxeo.ecm.webapp.trashManagement.TrashConfigDescriptor" />
   </extension-point>
   <documentation>
     Flag for trash management behaviour

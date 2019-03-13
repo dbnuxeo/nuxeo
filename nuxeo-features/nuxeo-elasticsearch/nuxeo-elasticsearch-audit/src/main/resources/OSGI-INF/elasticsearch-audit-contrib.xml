@@ -3,16 +3,16 @@
 
   <require>org.nuxeo.ecm.platform.audit.service.NXAuditEventsService</require>
   <require>org.nuxeo.elasticsearch.uidgen.sequencer.contrib</require>
-  
+
   <extension target="org.nuxeo.ecm.platform.audit.service.NXAuditEventsService"
-	     point="backend">
+             point="backend">
     <backend class="org.nuxeo.elasticsearch.audit.ESAuditBackend">
       <require>org.nuxeo.elasticsearch.ElasticSearchComponent</require>
     </backend>
   </extension>
 
   <extension target="org.nuxeo.ecm.platform.audit.service.NXAuditEventsService" point="storage">
-    <storage id="elasticsearchAuditStorage" class="org.nuxeo.elasticsearch.audit.ESAuditBackend"/>
+    <storage id="elasticsearchAuditStorage" class="org.nuxeo.elasticsearch.audit.ESAuditBackend" />
   </extension>
-  
+
 </component>

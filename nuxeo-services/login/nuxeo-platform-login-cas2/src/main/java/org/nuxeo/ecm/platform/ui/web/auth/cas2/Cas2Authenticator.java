@@ -206,8 +206,9 @@ public class Cas2Authenticator implements NuxeoAuthenticationPlugin, NuxeoAuthen
         if (httpRequest.getRequestURI() == null) {
             return false;
         }
-        PluggableAuthenticationService service = (PluggableAuthenticationService) Framework.getRuntime().getComponent(
-                PluggableAuthenticationService.NAME);
+        PluggableAuthenticationService service = (PluggableAuthenticationService) Framework.getRuntime()
+                                                                                           .getComponent(
+                                                                                                   PluggableAuthenticationService.NAME);
         if (service == null) {
             return false;
         }
@@ -357,8 +358,11 @@ public class Cas2Authenticator implements NuxeoAuthenticationPlugin, NuxeoAuthen
 
         ProxyTicketValidator proxyValidator;
         try {
-            proxyValidator = (ProxyTicketValidator) Framework.getRuntime().getContext().loadClass(
-                    proxyValidatorClassName).getDeclaredConstructor().newInstance();
+            proxyValidator = (ProxyTicketValidator) Framework.getRuntime()
+                                                             .getContext()
+                                                             .loadClass(proxyValidatorClassName)
+                                                             .getDeclaredConstructor()
+                                                             .newInstance();
         } catch (ReflectiveOperationException e) {
             log.error("checkProxyCasTicket during the ProxyTicketValidator initialization", e);
             return null;
@@ -447,8 +451,9 @@ public class Cas2Authenticator implements NuxeoAuthenticationPlugin, NuxeoAuthen
         Cookie alternativeAuthPluginCookie = getCookie(httpRequest, ALTERNATIVE_AUTH_PLUGIN_COOKIE_NAME);
         if (alternativeAuthPluginCookie != null) {
             String alternativeAuthPluginName = alternativeAuthPluginCookie.getValue();
-            PluggableAuthenticationService authService = (PluggableAuthenticationService) Framework.getRuntime().getComponent(
-                    PluggableAuthenticationService.NAME);
+            PluggableAuthenticationService authService = (PluggableAuthenticationService) Framework.getRuntime()
+                                                                                                   .getComponent(
+                                                                                                           PluggableAuthenticationService.NAME);
             NuxeoAuthenticationPlugin alternativeAuthPlugin = authService.getPlugin(alternativeAuthPluginName);
             if (alternativeAuthPlugin == null) {
                 log.error(String.format("No alternative authentication plugin named %s, will remove cookie %s.",

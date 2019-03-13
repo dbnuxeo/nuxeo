@@ -2,7 +2,7 @@
 <component name="org.nuxeo.search.ui.documentsLists">
 
   <extension target="org.nuxeo.ecm.webapp.documentsLists.DocumentsListsService"
-    point="list">
+             point="list">
 
     <documentsList name="SAVED_SEARCHES_CURRENT_SELECTION">
       <events>

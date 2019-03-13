@@ -2,7 +2,7 @@
 <component name="org.nuxeo.collections.directories.documentsLists">
 
   <extension target="org.nuxeo.ecm.webapp.documentsLists.DocumentsListsService"
-    point="list">
+             point="list">
 
     <documentsList name="COLLECTIONS_CURRENT_SELECTION">
       <events>
