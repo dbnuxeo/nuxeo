@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2006-2017 Nuxeo (http://nuxeo.com/) and others.
+ * (C) Copyright 2019 Nuxeo (http://nuxeo.com/) and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,36 +14,40 @@
  * limitations under the License.
  *
  * Contributors:
- *     Nuxeo - initial API and implementation
+ *     Salem Aouana
  */
-package org.nuxeo.runtime;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.services.event.Event;
-import org.nuxeo.runtime.services.event.EventService;
-import org.nuxeo.runtime.test.runner.Deploy;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.RuntimeFeature;
+package org.nuxeo.ecm.permissions;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.inject.Inject;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.nuxeo.ecm.core.test.CoreFeature;
+import org.nuxeo.ecm.webapp.security.UIPermissionService;
+import org.nuxeo.runtime.test.runner.Deploy;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+
 /**
- * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
+ * @since 11.1
  */
 @RunWith(FeaturesRunner.class)
-@Features(RuntimeFeature.class)
-@Deploy("org.nuxeo.runtime.test.tests:ListenerExtension.xml")
-public class TestEventService {
+@Features(CoreFeature.class)
+@Deploy("org.nuxeo.ecm.webapp.core")
+public class TestUIPermissionService {
+
     @Inject
-    protected EventService eventService;
+    protected UIPermissionService uiPermissionService;
 
     @Test
-    public void testSend() {
-        Event event = new Event("repository", "theId", this, null);
-        eventService.sendEvent(event);
+    public void shouldRetrievePermissionWithoutFailure() {
+        assertNotNull(uiPermissionService);
+        String[] permissions = uiPermissionService.getUIPermissions("unExistingType");
+        assertNotNull(permissions);
+        assertTrue(permissions.length == 0);
     }
-
 }

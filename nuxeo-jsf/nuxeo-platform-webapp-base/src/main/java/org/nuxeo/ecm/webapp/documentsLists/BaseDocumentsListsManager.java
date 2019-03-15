@@ -54,7 +54,7 @@ public abstract class BaseDocumentsListsManager implements Serializable {
 
     protected DocumentsListsService getService() {
         if (dlService == null) {
-            dlService = (DocumentsListsService) Framework.getRuntime().getComponent(DocumentsListsService.NAME);
+            dlService = Framework.getService(DocumentsListsService.class);
         }
         return dlService;
     }

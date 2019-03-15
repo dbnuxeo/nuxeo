@@ -51,7 +51,7 @@ public class ConversationTrashManager implements Serializable {
 
     protected static TrashManagementService getService() {
         if (trashService == null) {
-            trashService = (TrashManagementService) Framework.getRuntime().getComponent(TrashManagementService.NAME);
+            trashService = Framework.getService(TrashManagementService.class);
         }
         return trashService;
     }

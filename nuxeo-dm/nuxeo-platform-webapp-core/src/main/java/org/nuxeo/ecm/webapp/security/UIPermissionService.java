@@ -37,7 +37,6 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 @Deprecated
 public class UIPermissionService extends DefaultComponent {
-
     public static final String NAME = "org.nuxeo.ecm.webapp.security.UIPermissionService";
 
     private static final Log log = LogFactory.getLog(UIPermissionService.class);

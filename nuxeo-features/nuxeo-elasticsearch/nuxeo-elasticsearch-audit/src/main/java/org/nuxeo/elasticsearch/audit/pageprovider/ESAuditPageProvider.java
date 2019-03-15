@@ -171,14 +171,13 @@ public class ESAuditPageProvider extends AbstractPageProvider<LogEntry> implemen
     }
 
     protected ESAuditBackend getESBackend() {
-        NXAuditEventsService audit = (NXAuditEventsService) Framework.getRuntime()
-                                                                     .getComponent(NXAuditEventsService.NAME);
-        AuditBackend backend = audit.getBackend();
+        NXAuditEventsService auditEventsService =Framework.getService(NXAuditEventsService.class);
+        AuditBackend backend = auditEventsService.getBackend();
         if (backend instanceof ESAuditBackend) {
             return (ESAuditBackend) backend;
         }
         throw new NuxeoException(
-                "Unable to use ESAuditPageProvider if audit service is not configured to run with ElasticSearch");
+                "Unable to use ESAuditPageProvider if auditEventsService service is not configured to run with ElasticSearch");
     }
 
     protected void buildAuditQuery(boolean includeSort) {

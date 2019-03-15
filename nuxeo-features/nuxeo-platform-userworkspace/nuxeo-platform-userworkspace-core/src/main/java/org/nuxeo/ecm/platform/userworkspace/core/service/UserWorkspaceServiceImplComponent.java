@@ -63,6 +63,9 @@ public class UserWorkspaceServiceImplComponent extends DefaultComponent {
 
     @Override
     public <T> T getAdapter(Class<T> adapter) {
+        if (adapter == UserWorkspaceServiceImplComponent.class) {
+            return (T) this;
+        }
         if (adapter == UserWorkspaceService.class) {
             return adapter.cast(getUserWorkspaceService());
         }
@@ -111,8 +114,7 @@ public class UserWorkspaceServiceImplComponent extends DefaultComponent {
 
     // for tests only
     public static void reset() {
-        UserWorkspaceServiceImplComponent s = (UserWorkspaceServiceImplComponent) Framework.getRuntime()
-                                                                                           .getComponent(NAME);
+        UserWorkspaceServiceImplComponent s = Framework.getService(UserWorkspaceServiceImplComponent.class);
         s.userWorkspaceService = null;
     }
 

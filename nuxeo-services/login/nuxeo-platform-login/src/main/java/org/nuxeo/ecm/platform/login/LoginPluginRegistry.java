@@ -32,7 +32,6 @@ import org.nuxeo.runtime.model.DefaultComponent;
 import org.nuxeo.runtime.model.Extension;
 
 public class LoginPluginRegistry extends DefaultComponent {
-
     public static final ComponentName NAME = new ComponentName("org.nuxeo.ecm.platform.login.LoginPluginRegistry");
 
     public static final String EP_PLUGIN = "plugin";

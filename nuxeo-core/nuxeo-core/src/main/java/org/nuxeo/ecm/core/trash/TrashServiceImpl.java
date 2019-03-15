@@ -26,7 +26,6 @@ import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.DefaultComponent;
 
 public class TrashServiceImpl extends DefaultComponent {
-
     /** @since 10.2 */
     public static final ComponentName NAME = new ComponentName("org.nuxeo.ecm.core.trash.TrashService");
 
@@ -74,7 +73,9 @@ public class TrashServiceImpl extends DefaultComponent {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getAdapter(Class<T> adapter) {
-        if (trashService == null) {
+        if (this.getClass() == adapter) {
+            return (T) this;
+        } else if (trashService == null) {
             synchronized (this) {
                 if (trashService == null) {
                     trashService = recomputeTrashService();
