@@ -870,4 +870,17 @@ public abstract class AbstractDirectoryTest {
         }
     }
 
+    @Test
+    public void shouldFailWhenCreateDuplicateEntries() {
+        try {
+            Session session = directoryService.open("continentDirectory");
+            Map<String, Object> continent = Map.of("id", "middle-earth", "label", "Middle Earth");
+            List<Map<String, Object>> entries = Arrays.asList(continent, continent);
+            entries.forEach(session::createEntry);
+        } catch (DirectoryException de) {
+            assertTrue(de.getMessage().contains("Entry"));
+            assertTrue(de.getMessage().contains("middle-earth"));
+            assertTrue(de.getMessage().contains("continentDirectory"));
+        }
+    }
 }

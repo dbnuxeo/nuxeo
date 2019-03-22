@@ -37,6 +37,14 @@
       <createTablePolicy>on_missing_columns</createTablePolicy>
     </directory>
 
+    <extension target="org.nuxeo.ecm.directory.GenericDirectory" point="directories">
+      <directory name="anyDirectory" extends="template-directory">
+        <schema>vocabulary</schema>
+        <idField>id</idField>
+        <createTablePolicy>on_missing_columns</createTablePolicy>
+      </directory>
+    </extension>
+
   </extension>
 
 </component>
