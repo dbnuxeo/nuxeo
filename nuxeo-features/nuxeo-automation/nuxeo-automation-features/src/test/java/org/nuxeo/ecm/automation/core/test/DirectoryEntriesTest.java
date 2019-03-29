@@ -18,7 +18,8 @@
  */
 package org.nuxeo.ecm.automation.core.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.nuxeo.ecm.directory.BaseDirectoryDescriptor.DEFAULT_DATA_FILE_CHARACTER_SEPARATOR;
 
 import java.util.HashMap;
@@ -114,19 +115,17 @@ public class DirectoryEntriesTest {
     }
 
     @Test
-    public void shouldFailWhenDuplicatesEntriesExist() {
-        String directoryName = "anyDirectory";
-        SQLDirectory directory = (SQLDirectory) directoryService.getDirectory(directoryName);
+    public void shouldFailWhenDuplicatedEntriesExist() {
+        SQLDirectory directory = (SQLDirectory) directoryService.getDirectory("anyDirectory");
         Schema schema = schemaManager.getSchema(directory.getSchema());
         Session session = directory.getSession();
 
         try {
-            DirectoryCSVLoader.loadData("testdirectorydata/continent_with_duplicates_entries.csv",
+            DirectoryCSVLoader.loadData("testdirectorydata/continent_with_duplicated_entries.csv",
                     DEFAULT_DATA_FILE_CHARACTER_SEPARATOR, schema, session::createEntry);
+            fail();
         } catch (DirectoryException de) {
-            assertTrue(de.getMessage().contains("middleearth"));
-            assertTrue(de.getMessage().contains("Entry"));
-            assertTrue(de.getMessage().contains(directoryName));
+            assertEquals("Entry with id middleearth already exists in directory 'anyDirectory'", de.getMessage());
         }
     }
 

@@ -931,7 +931,7 @@ public class SQLSession extends BaseSession {
 
             if (hasEntry(id)) {
                 throw new DirectoryException(
-                        String.format("Entry with id %s already exists on directory '%s'", id, directory.getName()));
+                        String.format("Entry with id %s already exists in directory '%s'", id, directory.getName()));
             }
         }
 

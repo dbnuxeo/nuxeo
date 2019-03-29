@@ -198,7 +198,7 @@ public class DirectoryOperationsTest {
             fail();
         } catch (DirectoryException e) {
             assertEquals(
-                    "Failed to invoke operation Directory.CreateEntries, Entry with id europe already exists on directory 'continent'",
+                    "Failed to invoke operation Directory.CreateEntries, Entry with id europe already exists in directory 'continent'",
                     e.getMessage());
         }
     }
