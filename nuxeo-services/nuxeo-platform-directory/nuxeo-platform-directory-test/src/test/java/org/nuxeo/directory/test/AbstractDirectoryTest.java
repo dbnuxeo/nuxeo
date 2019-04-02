@@ -875,12 +875,11 @@ public abstract class AbstractDirectoryTest {
         try {
             Session session = directoryService.open("continentDirectory");
             Map<String, Object> continent = Map.of("id", "middle-earth", "label", "Middle Earth");
-            List<Map<String, Object>> entries = Arrays.asList(continent, continent);
+            List<Map<String, Object>> entries = List.of(continent, continent);
             entries.forEach(session::createEntry);
-            fail();
+            fail("Should raise a DirectoryException");
         } catch (DirectoryException de) {
-            assertEquals("Entry with id middle-earth already exists in directory 'continentDirectory'",
-                    de.getMessage());
+            assertEquals("Entry with id middle-earth already exists in directory continentDirectory", de.getMessage());
         }
     }
 }

@@ -18,10 +18,6 @@
  */
 package org.nuxeo.ecm.automation.core.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.nuxeo.ecm.directory.BaseDirectoryDescriptor.DEFAULT_DATA_FILE_CHARACTER_SEPARATOR;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,18 +36,12 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
-import org.nuxeo.ecm.core.schema.SchemaManager;
-import org.nuxeo.ecm.core.schema.types.Schema;
 import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
-import org.nuxeo.ecm.directory.DirectoryCSVLoader;
-import org.nuxeo.ecm.directory.DirectoryException;
-import org.nuxeo.ecm.directory.Session;
 import org.nuxeo.ecm.directory.api.DirectoryService;
 import org.nuxeo.ecm.directory.localconfiguration.DirectoryConfigurationConstants;
-import org.nuxeo.ecm.directory.sql.SQLDirectory;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -77,10 +67,7 @@ public class DirectoryEntriesTest {
     protected DirectoryService directoryService;
 
     @Inject
-    AutomationService service;
-
-    @Inject
-    SchemaManager schemaManager;
+    protected AutomationService service;
 
     protected static final String continentContentJson = "["
             + "{\"id\":\"europe\",\"obsolete\":0,\"ordering\":10000000,\"label\":\"label.directories.continent.europe\"},"
@@ -112,21 +99,6 @@ public class DirectoryEntriesTest {
 
         StringBlob result = getDirectoryEntries(doc);
         JSONAssert.assertEquals(continentLocalContentJson, result.getString(), JSONCompareMode.NON_EXTENSIBLE);
-    }
-
-    @Test
-    public void shouldFailWhenDuplicatedEntriesExist() {
-        SQLDirectory directory = (SQLDirectory) directoryService.getDirectory("anyDirectory");
-        Schema schema = schemaManager.getSchema(directory.getSchema());
-        Session session = directory.getSession();
-
-        try {
-            DirectoryCSVLoader.loadData("testdirectorydata/continent_with_duplicated_entries.csv",
-                    DEFAULT_DATA_FILE_CHARACTER_SEPARATOR, schema, session::createEntry);
-            fail();
-        } catch (DirectoryException de) {
-            assertEquals("Entry with id middleearth already exists in directory 'anyDirectory'", de.getMessage());
-        }
     }
 
     protected StringBlob getDirectoryEntries(DocumentModel doc) throws Exception {
