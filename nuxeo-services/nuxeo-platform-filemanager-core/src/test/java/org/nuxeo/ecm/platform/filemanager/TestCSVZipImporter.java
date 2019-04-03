@@ -25,6 +25,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.zip.ZipFile;
 
 import javax.inject.Inject;
@@ -124,6 +126,23 @@ public class TestCSVZipImporter {
         fm.createOrUpdateDocument(context);
         DocumentModelList children = coreSession.getChildren(workspace2.getRef());
         assertSame(0, children.size());
+    }
+
+    @Test
+    public void testDocumentCreationWithListType() throws Exception {
+        File archive = getArchiveFile("test-data/testCSVListTypeArchive.zip");
+        FileManager fm = Framework.getService(FileManager.class);
+        Blob blob = Blobs.createBlob(archive);
+        FileImporterContext context = FileImporterContext.builder(coreSession, blob, workspace2.getPathAsString())
+                .overwrite(true)
+                .build();
+        fm.createOrUpdateDocument(context);
+        DocumentModelList children = coreSession.getChildren(workspace2.getRef());
+        assertSame(1, children.size());
+
+        DocumentModel doc = children.get(0);
+        List<String> contributors = Arrays.asList((String[]) doc.getPropertyValue("dc:contributors"));
+        assertEquals(4, contributors.size());
     }
 
 }

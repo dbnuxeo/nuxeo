@@ -29,6 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -41,6 +42,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.common.utils.Path;
+import org.nuxeo.ecm.automation.core.util.ComplexTypeJSONDecoder;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.Blobs;
 import org.nuxeo.ecm.core.api.CloseableFile;
@@ -51,6 +53,7 @@ import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.schema.DocumentType;
 import org.nuxeo.ecm.core.schema.TypeConstants;
 import org.nuxeo.ecm.core.schema.types.Field;
+import org.nuxeo.ecm.core.schema.types.ListType;
 import org.nuxeo.ecm.core.schema.types.SimpleTypeImpl;
 import org.nuxeo.ecm.core.schema.types.Type;
 import org.nuxeo.ecm.core.schema.types.primitives.DateType;
@@ -261,6 +264,22 @@ public class CSVZipImporter extends AbstractFileImporter {
                 }
                 blob.setFilename(stringValue);
                 fieldValue = (Serializable) blob;
+            }
+        } else if (type.isListType()) {
+            Type listFieldType = ((ListType) type).getFieldType();
+            if (listFieldType.isSimpleType()) {
+                /*
+                 * Array.
+                 */
+                fieldValue = stringValue.split("\\|");
+            } else {
+                /*
+                 * TODO:
+                 * Complex list.
+                 */
+                //fieldValue = (Serializable) ComplexTypeJSONDecoder.decodeList((ListType) listFieldType,
+                //        stringValue);
+                //replaceBlobs((List<Object>) fieldValue);
             }
         }
 
