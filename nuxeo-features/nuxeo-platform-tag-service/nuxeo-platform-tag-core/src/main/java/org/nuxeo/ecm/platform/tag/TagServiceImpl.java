@@ -83,8 +83,8 @@ public class TagServiceImpl extends DefaultComponent {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getAdapter(Class<T> adapter) {
-        if (this.getClass() == adapter) {
-            return (T) this;
+        if (adapter == TagServiceImpl.class) {
+            return adapter.cast(this);
         } else if (tagService == null) {
             synchronized (this) {
                 if (tagService == null) {

@@ -171,7 +171,7 @@ public class ESAuditPageProvider extends AbstractPageProvider<LogEntry> implemen
     }
 
     protected ESAuditBackend getESBackend() {
-        NXAuditEventsService auditEventsService =Framework.getService(NXAuditEventsService.class);
+        NXAuditEventsService auditEventsService = Framework.getService(NXAuditEventsService.class);
         AuditBackend backend = auditEventsService.getBackend();
         if (backend instanceof ESAuditBackend) {
             return (ESAuditBackend) backend;

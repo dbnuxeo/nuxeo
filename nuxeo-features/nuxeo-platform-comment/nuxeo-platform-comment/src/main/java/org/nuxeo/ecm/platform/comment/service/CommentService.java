@@ -87,8 +87,8 @@ public class CommentService extends DefaultComponent {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getAdapter(Class<T> adapter) {
-        if (CommentService.class == adapter) {
-            return (T) this;
+        if (adapter == CommentService.class) {
+            return adapter.cast(this);
         } else if (commentManager == null) {
             synchronized (this) {
                 if (commentManager == null) {

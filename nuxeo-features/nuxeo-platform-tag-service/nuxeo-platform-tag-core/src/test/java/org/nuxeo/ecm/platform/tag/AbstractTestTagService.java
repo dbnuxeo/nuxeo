@@ -100,7 +100,7 @@ public abstract class AbstractTestTagService {
     protected HotDeployer deployer;
 
     @Inject
-    protected NXAuditEventsService nxAuditEventsService;
+    protected NXAuditEventsService auditEventsService;
 
     protected boolean proxies;
 
@@ -883,7 +883,7 @@ public abstract class AbstractTestTagService {
         }
 
         // Also check that the event was not logged in the audit
-        AuditBackend backend = nxAuditEventsService.getBackend();
+        AuditBackend backend = auditEventsService.getBackend();
         assertEquals(0, backend
                                .queryLogs(new AuditQueryBuilder().predicate(Predicates.eq(LOG_PRINCIPAL_NAME, "bob"))
                                                                  .and(Predicates.eq(LOG_EVENT_ID, DOCUMENT_UPDATED)))

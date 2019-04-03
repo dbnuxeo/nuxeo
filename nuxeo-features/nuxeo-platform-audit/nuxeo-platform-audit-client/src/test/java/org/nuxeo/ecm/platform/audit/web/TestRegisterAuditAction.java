@@ -42,7 +42,7 @@ import org.nuxeo.runtime.test.runner.RuntimeFeature;
 public class TestRegisterAuditAction {
 
     @Inject
-    ActionManager actionService;
+    protected ActionManager actionService;
 
     @Test
     public void testRegistration() {

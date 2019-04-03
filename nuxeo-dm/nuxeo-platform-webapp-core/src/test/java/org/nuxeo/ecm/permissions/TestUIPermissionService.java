@@ -19,8 +19,8 @@
 
 package org.nuxeo.ecm.permissions;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import javax.inject.Inject;
 
@@ -48,6 +48,6 @@ public class TestUIPermissionService {
         assertNotNull(uiPermissionService);
         String[] permissions = uiPermissionService.getUIPermissions("unExistingType");
         assertNotNull(permissions);
-        assertTrue(permissions.length == 0);
+        assertEquals(0, permissions.length);
     }
 }

@@ -64,7 +64,7 @@ public class UserWorkspaceServiceImplComponent extends DefaultComponent {
     @Override
     public <T> T getAdapter(Class<T> adapter) {
         if (adapter == UserWorkspaceServiceImplComponent.class) {
-            return (T) this;
+            return adapter.cast(this);
         }
         if (adapter == UserWorkspaceService.class) {
             return adapter.cast(getUserWorkspaceService());
