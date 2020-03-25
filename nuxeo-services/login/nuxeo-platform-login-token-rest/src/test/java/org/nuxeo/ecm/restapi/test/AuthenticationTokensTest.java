@@ -162,6 +162,37 @@ public class AuthenticationTokensTest extends BaseTest {
         assertFalse(token.get("username").textValue().isEmpty());
     }
 
+    @Test
+    public void itCanCreateDetailedJSONTokens() throws Exception {
+        // acquire a token
+        MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+        params.put("application", Collections.singletonList("app"));
+        params.put("deviceId", Collections.singletonList("device"));
+        params.put("permission", Collections.singletonList("rw"));
+        params.put("detail", Collections.singletonList("true"));
+        try (CloseableClientResponse response = getResponse(RequestType.POST, "/token", null, params, null, null,
+                new String[] { MediaType.APPLICATION_JSON })) {
+            assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+            JsonNode respToken = mapper.readTree(response.getEntityInputStream());
+            assertTrue(MediaType.APPLICATION_JSON_TYPE.isCompatible(response.getType()));
+            assertEquals("app", respToken.get("application").textValue());
+            assertEquals("device", respToken.get("deviceId").textValue());
+            assertEquals("rw", respToken.get("permission").textValue());
+            assertFalse(respToken.get("creationDate").textValue().isEmpty());
+            assertFalse(respToken.get("username").textValue().isEmpty());
+        }
+
+        // check tokens for current user
+        List<JsonNode> tokens = getTokens();
+        assertEquals(1, tokens.size());
+        JsonNode token = tokens.get(0);
+        assertEquals("app", token.get("application").textValue());
+        assertEquals("device", token.get("deviceId").textValue());
+        assertEquals("rw", token.get("permission").textValue());
+        assertFalse(token.get("creationDate").textValue().isEmpty());
+        assertFalse(token.get("username").textValue().isEmpty());
+    }
+
     private List<JsonNode> getTokens() throws IOException {
         return getTokens(null);
     }
